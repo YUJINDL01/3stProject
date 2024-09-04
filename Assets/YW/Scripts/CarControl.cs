@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CarControl : MonoBehaviour
 {
@@ -14,11 +15,23 @@ public class CarControl : MonoBehaviour
     // ⇒ R + 위쪽 방향키 = 후진
     
     
+    // 위쪽 화살키: 악셀이라 하고 D 눌렀을 때 앞으로 R 눌렀을 때 뒤로
+    // 악셀 밟는 힘의 크기 생각 + 길게 눌렀을 때라 생각하니까 그럼 앞으로 쭉 가다가 속도가 계속 빨라짐 그래서
+    // 위쪽 화살표가 악셀이니 누르면 가속할 수 있도록
+    
     public float moveSpeed = 5f; // 이동 속도
     public float rotationSpeed = 75f; // 회전 속도
     public float maxRotationAngle = 900f; // 최대 회전 각도 (승용차는 3회전이 최대, 스티어링  2.5바퀴)
 
     private float currentRotation = 0f; // 현재 회전 각도
+
+    public float accelerationRate = 0.1f; // 가속도 비율
+    public float decelerationRate = 0.1f; // 감속도 비율
+    public float maxSpeed = 10f; // 최대 속도
+    public float minSpeed = 0f; // 최소 속도
+    
+    //속도 방향 실제 이동 세 개로 분리해서 코드 정리
+    
     
     void Update()
     {
@@ -49,6 +62,22 @@ public class CarControl : MonoBehaviour
             currentRotation = newRotation; // 회전 각도 업데이트
         }
         
+        // 위 화살표 키를 누르고 있는지 확인
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            // 속도를 증가시킵니다
+            moveSpeed = Mathf.Min(moveSpeed + accelerationRate * Time.deltaTime, maxSpeed);
+            transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+           
+        }
+        else if(Input.GetKey(KeyCode.Space))
+        {
+            // 속도를 감소시킵니다
+            moveSpeed = Mathf.Max(moveSpeed - decelerationRate * Time.deltaTime, minSpeed);
+            transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+        }
+
+        
         
         
         
@@ -58,12 +87,12 @@ public class CarControl : MonoBehaviour
         Vector3 moveDirection = Vector3.zero;
 
         // 위쪽 방향키와 D를 동시에 누를 때
-        if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.D))
         {
             moveDirection = Vector3.forward;
         }
         // 위쪽 방향키와 R을 동시에 누를 때
-        else if (Input.GetKey(KeyCode.UpArrow) && Input.GetKey(KeyCode.R))
+        else if (Input.GetKey(KeyCode.R))
         {
             moveDirection = Vector3.back;
         }
@@ -74,6 +103,7 @@ public class CarControl : MonoBehaviour
             moveDirection = Vector3.zero;
         }
 
+        
         // 이동 처리
         transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
     }

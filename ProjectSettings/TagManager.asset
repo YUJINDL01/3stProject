@@ -9,6 +9,7 @@ TagManager:
   - YellowLine
   - Stone
   - ParkSensor
+  - RedLine
   layers:
   - Default
   - TransparentFX
