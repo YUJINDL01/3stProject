@@ -1,6 +1,8 @@
 using System;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class OnCollisionDetector : MonoBehaviour
 {
@@ -20,17 +22,40 @@ public class OnCollisionDetector : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter(Collider yelloLine)
+    private void OnTriggerEnter(Collider other)
     {
-        if (yelloLine.gameObject.CompareTag("YellowLine")) // 만약 노란선이랑 부딪치면
+        if (other.gameObject.CompareTag("YellowLine")) // 만약 노란선이랑 부딪치면
         {
-            Debug.Log("중앙선 침범 감점");
-            collisionText.text = "중앙선 침범, -5점 감점"; // 중앙섬 침범 Text 띄우기
-            Invoke("ClearText", 2f); // 2초 뒤에 텍스트를 지우는 함수 호출
-        }   
+            Debug.Log("차선 이탈");
+            collisionText.text = "차선 이탈, -15점"; // 차선 이탈 Text 띄우기
+            Invoke("ClearText", 3f); // 2초 뒤에 텍스트를 지우는 함수 호출
+        }
+        else if (other.gameObject.CompareTag("ParkSensor")) // 주차 검지선
+        {
+            Debug.Log("검지선 접촉");
+            collisionText.text = "주차 검지선 접촉, -10점";
+            Invoke("ClearText", 3f);
+        }
+        
+      
+        
         
     }
-    
+
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Stone"))  // 연석 탑승
+        {
+            Debug.Log("연석 탑승");
+            collisionText.text = "바퀴가 연석에 접촉할 시 실격입니다.";
+            Invoke("ClearText", 3f);
+        }
+        
+        
+        
+    }
+
 
     private void ClearText()
     {
@@ -39,6 +64,34 @@ public class OnCollisionDetector : MonoBehaviour
             collisionText.text = ""; // 텍스트를 빈 문자열로 설정하여 지우기
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // Switch 써서 각 Case별로 나눠서 태그에 해당하는 UI 띄우기
+    // trigger 통해서 나와야 하는 태그들
+    // "안전벨트 미착용 시 실격입니다"
+    // "바퀴가 연석에 접촉할 시 실격입니다." o
+    // "출발 신호 위반 실격입니다."
+    // "신호 위반 실격입니다."
+    
+    
+    // "차선 이탈 -15점" o 
+    
+    // 돌발 시 급정지 미이행 -10점
+    // 가속 미이행 -10점
+    // (주차)검지선 접촉 -10점, 주차브레이크 미이행 -10점
+    
+    // 음성지시 미종료 시 차량 조작 -5점
+    
+    // 과속 -3점
+  
+   
     
     
     

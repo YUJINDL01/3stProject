@@ -7,6 +7,8 @@ TagManager:
   - Grass
   - Street
   - YellowLine
+  - Stone
+  - ParkSensor
   layers:
   - Default
   - TransparentFX
