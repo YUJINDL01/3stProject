@@ -4,16 +4,18 @@ using UnityEngine.Video;
 [CreateAssetMenu(fileName = "New Problem", menuName = "Problem/Create New Problem")]
 public class Problem: ScriptableObject
 {
+    //공통 요소 
     public int number;
     public string problem;
-    public Sprite image;
-    public VideoPlayer video;
     public string[] options;
     public int[] answer;
     public string solution;
     public int score;
-
-
+   
+    //비 공통 요소 
+    public Sprite image;
+    public string[] explanation;
+    public VideoClip video;
 }
 
 
