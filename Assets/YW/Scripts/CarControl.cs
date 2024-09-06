@@ -63,7 +63,7 @@ public class CarControl : MonoBehaviour
         }
         
         // 위 화살표 키를 누르고 있는지 확인
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.UpArrow))
         {
             // 속도를 증가시킵니다
             moveSpeed = Mathf.Min(moveSpeed + accelerationRate * Time.deltaTime, maxSpeed);
